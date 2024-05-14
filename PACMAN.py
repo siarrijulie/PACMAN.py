@@ -53,7 +53,7 @@ def PlacementsGUM():  # placements des pacgums
 GUM = PlacementsGUM()   
 
 # Fonction pour calculer la carte des distances
-def IAPacman():
+def carteDeplacements():
    M = LARGEUR * HAUTEUR  # Les cases du parcours, nombre de cases totales du labyrinthe : 220 < 1000
    G = 1000  # Les cases correspondantes aux murs : Valeur très grande
    P = 0  # Les cases des Pac-Gommes : 0
@@ -67,7 +67,7 @@ def IAPacman():
    return carte
 
 PacManPos = [5,5]
-IAPacman()
+carteDeplacements()
 
 Ghosts  = []
 Ghosts.append(  [LARGEUR//2, HAUTEUR // 2 ,  "pink"  ]   )
