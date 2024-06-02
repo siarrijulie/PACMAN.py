@@ -305,30 +305,35 @@ def PacManPossibleMove():
 
 def outPopGhosts(x, y):
     L = []
-    if (TBL[x - 1][y] == 1 and TBL[x][y - 1] == 1):
+    if(TBL[x][y] == 2):
+        L = (0,-1)
+    elif(y== 3 and TBL[x][y+1] == 2):
         L = (1, 0)
-    if (TBL[x + 1][y] == 1 and TBL[x][y - 1] == 1):
-        L = (-1, 0)
-    if (TBL[x - 1][y] == 2 and TBL[x + 1][y] == 2):
-        L = (0, -1)
-    if(TBL[x][y+1] == 2):
-        L = (1, 0)
-        L= (-1, 0)
-    if (TBL[x][y - 1] == 0):
-        L = (0, -1)
+    else:
+           if (TBL[x - 1][y] == 1 and TBL[x][y - 1] == 1):
+            L = (1, 0)
+        if (TBL[x + 1][y] == 1 and TBL[x][y - 1] == 1):
+            L = (-1, 0)
+        if (TBL[x - 1][y] == 2 and TBL[x + 1][y] == 2):
+            L = (0, -1)
+        if (TBL[x][y - 1] == 0):
+            L = (0, -1)
+
+    print(str(x) + str(y))
     return L
 def GhostsPossibleMove(x, y):
     L = []
     if TBL[x][y] == 2:
         L.append(outPopGhosts(x,y))
-    if TBL[x][y - 1] != 1:
-        L.append("up")
-    if TBL[x][y + 1] != 1:
-        L.append("down")
-    if TBL[x - 1][y] != 1:
-        L.append("left")
-    if TBL[x + 1][y] != 1:
-        L.append("right")
+    else :
+        if TBL[x][y - 1] != 1:
+            L.append("up")
+        if TBL[x][y + 1] != 1:
+            L.append("down")
+        if TBL[x - 1][y] != 1:
+            L.append("left")
+        if TBL[x + 1][y] != 1:
+            L.append("right")
     return L
 
 def IAPacman():
