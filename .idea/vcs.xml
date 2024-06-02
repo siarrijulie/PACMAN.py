@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Docs Julie/Mission2/GsbRapport" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/E3FI_Esiee/C#/E3FI_SpaceInvader" vcs="Git" />
   </component>
 </project>
