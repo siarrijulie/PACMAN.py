@@ -1,9 +1,7 @@
 import random
 import tkinter as tk
 from tkinter import font as tkfont
-from tkinter import font as tkfont
 import numpy as np
-
 
 
 ##########################################################################
@@ -11,7 +9,6 @@ import numpy as np
 #   Partie I : variables du jeu  -  placez votre code dans cette section
 #
 #########################################################################
-
 
 # Plan du labyrinthe
 
@@ -21,9 +18,6 @@ import numpy as np
 
 # transforme une liste de liste Python en TBL numpy équivalent à un tableau 2D en C
 def CreateArray(L):
-    T = np.array(L, dtype=np.int32)
-    T = T.transpose()  ## ainsi, on peut écrire TBL[x][y] (accès aux éléments)
-    return T
     T = np.array(L, dtype=np.int32)
     T = T.transpose()  ## ainsi, on peut écrire TBL[x][y] (accès aux éléments)
     return T
@@ -62,38 +56,8 @@ def PlacementsGUM():  # placements des pacgums
 GUM = PlacementsGUM()
 
 
-def updateDistance(carte):
-    ok = True
-    while ok:
-        ok = True
-        for x in range(LARGEUR):
-            for y in range(HAUTEUR):
-                if GUM[x][y] == 1:
-                    carte[x][y] = 0
-                    continue
-                if GUM[x][y] == 0 and carte[x][y] == 0:
-                    carte[x][y] = 100
-                if x - 1 >= 0 and carte[x][y] < carte[x-1][y] and carte[x - 1][y] != 1000:
-                    carte[x][y] = carte[x - 1][y] + 1
-                    ok = True
-                    continue
-                if x + 1 < LARGEUR and carte[x][y] < carte[x+1][y] and carte[x + 1][y] != 1000:
-                    carte[x][y] = carte[x + 1][y] + 1
-                    ok = True
-                    continue
-                if y - 1 >= 0 and carte[x][y - 1] != 1000 and carte[x][y - 1] != 100:
-                    carte[x][y] = carte[x][y - 1] + 1
-                    ok = True
-                    continue
-                if y + 1 < HAUTEUR and carte[x][y + 1] != 1000 and carte[x][y + 1] != 100:
-                    carte[x][y] = carte[x][y + 1] + 1
-                    ok = True
-                    continue
-    return carte
-
-
 # Fonction pour calculer la carte des distances
-def carteDeplacement():
+def carteDeplacements():
     M = LARGEUR * HAUTEUR  # Les cases du parcours, nombre de cases totales du labyrinthe : 220 < 1000
     G = 1000  # Les cases correspondantes aux murs : Valeur très grande
     P = 0  # Les cases des Pac-Gommes : 0
@@ -108,7 +72,7 @@ def carteDeplacement():
 
 
 PacManPos = [5, 5]
-carteDeplacement()
+carteDeplacements()
 
 Ghosts = []
 #Ajout d'une value direction
@@ -143,22 +107,6 @@ def SetInfo2(x, y, info):
     if x >= LTBL: return
     if y >= LTBL: return
     TBL2[x][y] = info
-def SetInfo1(x, y, info):
-    info = str(info)
-    if x < 0: return
-    if y < 0: return
-    if x >= LTBL: return
-    if y >= LTBL: return
-    TBL1[x][y] = info
-
-
-def SetInfo2(x, y, info):
-    info = str(info)
-    if x < 0: return
-    if y < 0: return
-    if x >= LTBL: return
-    if y >= LTBL: return
-    TBL2[x][y] = info
 
 
 ##############################################################################
@@ -172,11 +120,8 @@ EPAISS = 8  # epaisseur des murs bleus en pixels
 
 screeenWidth = (LARGEUR + 1) * ZOOM
 screenHeight = (HAUTEUR + 2) * ZOOM
-screeenWidth = (LARGEUR + 1) * ZOOM
-screenHeight = (HAUTEUR + 2) * ZOOM
 
 Window = tk.Tk()
-Window.geometry(str(screeenWidth) + "x" + str(screenHeight))  # taille de la fenetre
 Window.geometry(str(screeenWidth) + "x" + str(screenHeight))  # taille de la fenetre
 Window.title("ESIEE - PACMAN")
 
@@ -184,15 +129,8 @@ Window.title("ESIEE - PACMAN")
 
 PAUSE_FLAG = False
 
-PAUSE_FLAG = False
-
 
 def keydown(e):
-    global PAUSE_FLAG
-    if e.char == ' ':
-        PAUSE_FLAG = not PAUSE_FLAG
-
-
     global PAUSE_FLAG
     if e.char == ' ':
         PAUSE_FLAG = not PAUSE_FLAG
@@ -213,13 +151,11 @@ ListePages = {}
 PageActive = 0
 
 
-
 def CreerUnePage(id):
     Frame = tk.Frame(F)
     ListePages[id] = Frame
     Frame.grid(row=0, column=0, sticky="nsew")
     return Frame
-
 
 
 def AfficherPage(id):
@@ -228,16 +164,11 @@ def AfficherPage(id):
     ListePages[id].tkraise()
 
 
-
-
 def WindowAnim():
     PlayOneTurn()
     Window.after(333, WindowAnim)
 
-    Window.after(333, WindowAnim)
 
-
-Window.after(100, WindowAnim)
 Window.after(100, WindowAnim)
 
 # Ressources
@@ -250,8 +181,6 @@ Frame1 = CreerUnePage(0)
 
 canvas = tk.Canvas(Frame1, width=screeenWidth, height=screenHeight)
 canvas.place(x=0, y=0)
-canvas = tk.Canvas(Frame1, width=screeenWidth, height=screenHeight)
-canvas.place(x=0, y=0)
 canvas.configure(background='black')
 
 
@@ -261,33 +190,12 @@ def To(coord):
     return coord * ZOOM + ZOOM
 
 
-    return coord * ZOOM + ZOOM
-
-
 # dessine l'ensemble des éléments du jeu par dessus le décor
 
 anim_bouche = 0
 animPacman = [5, 10, 15, 10, 5]
-animPacman = [5, 10, 15, 10, 5]
 
 
-def Affiche(PacmanColor, message):
-    global anim_bouche
-
-    def CreateCircle(x, y, r, coul):
-        canvas.create_oval(x - r, y - r, x + r, y + r, fill=coul, width=0)
-
-    canvas.delete("all")
-
-    # murs
-
-    for x in range(LARGEUR - 1):
-        for y in range(HAUTEUR):
-            if (TBL[x][y] == 1 and TBL[x + 1][y] == 1):
-                xx = To(x)
-                xxx = To(x + 1)
-                yy = To(y)
-                canvas.create_line(xx, yy, xxx, yy, width=EPAISS, fill="blue")
 def Affiche(PacmanColor, message):
     global anim_bouche
 
@@ -380,8 +288,6 @@ def Affiche(PacmanColor, message):
 AfficherPage(0)
 
 
-
-
 #########################################################################
 #
 #  Partie III :   Gestion de partie   -   placez votre code dans cette section
@@ -389,74 +295,64 @@ AfficherPage(0)
 #########################################################################
 
 def PacManPossibleMove():
-    global score
     L = []
     x, y = PacManPos
-    if (TBL[x][y - 1] == 0 and GUM[x][y - 1] == 1):
-        L.append((0, -1))
-        GUM[x][y - 1] = 0
-        score += 100
-        return L
-    if (TBL[x][y + 1] == 0 and GUM[x][y + 1] == 1):
-        L.append((0, 1))
-        GUM[x][y + 1] = 0
-        score += 100
-        return L
-    if (TBL[x + 1][y] == 0 and GUM[x + 1][y] == 1):
-        L.append((1, 0))
-        GUM[x + 1][y] = 0
-        score += 100
-        return L
-    if (TBL[x - 1][y] == 0 and GUM[x - 1][y] == 1):
-        L.append((-1, 0))
-        GUM[x - 1][y] = 0
-        score += 100
-        return L
-    if (TBL[x][y - 1] == 0):
-        L.append((0, -1))
-    if (TBL[x][y + 1] == 0):
-        L.append((0, 1))
-    if (TBL[x + 1][y] == 0):
-        L.append((1, 0))
-    if (TBL[x - 1][y] == 0 and GUM[x - 1][y] == 1):
-        L.append((-1, 0))
-
+    if (TBL[x][y - 1] == 0): L.append((0, -1))
+    if (TBL[x][y + 1] == 0): L.append((0, 1))
+    if (TBL[x + 1][y] == 0): L.append((1, 0))
+    if (TBL[x - 1][y] == 0): L.append((-1, 0))
     return L
 
+def outPopGhosts(x, y):
+    L = []
+    if(TBL[x][y] == 2):
+        L = (0,-1)
+    elif(y== 3 and TBL[x][y+1] == 2):
+        L = (1, 0)
+    else:
+           if (TBL[x - 1][y] == 1 and TBL[x][y - 1] == 1):
+            L = (1, 0)
+        if (TBL[x + 1][y] == 1 and TBL[x][y - 1] == 1):
+            L = (-1, 0)
+        if (TBL[x - 1][y] == 2 and TBL[x + 1][y] == 2):
+            L = (0, -1)
+        if (TBL[x][y - 1] == 0):
+            L = (0, -1)
 
+    print(str(x) + str(y))
+    return L
 def GhostsPossibleMove(x, y):
     L = []
-    if (TBL[x][y - 1] == 2): L.append((0, -1))
-    if (TBL[x][y + 1] == 2): L.append((0, 1))
-    if (TBL[x + 1][y] == 2): L.append((1, 0))
-    if (TBL[x - 1][y] == 2): L.append((-1, 0))
+    if TBL[x][y] == 2:
+        L.append(outPopGhosts(x,y))
+    else :
+        if TBL[x][y - 1] != 1:
+            L.append("up")
+        if TBL[x][y + 1] != 1:
+            L.append("down")
+        if TBL[x - 1][y] != 1:
+            L.append("left")
+        if TBL[x + 1][y] != 1:
+            L.append("right")
     return L
 
-
 def IAPacman():
-    global PacManPos, Ghosts, carteDistance
-    #deplacement Pacman
+    global PacManPos, Ghosts
+    # deplacement Pacman
     L = PacManPossibleMove()
     choix = random.randrange(len(L))
     PacManPos[0] += L[choix][0]
     PacManPos[1] += L[choix][1]
-    carteDistance = updateDistance(carteDistance)
+
     # juste pour montrer comment on se sert de la fonction SetInfo1
     for x in range(LARGEUR):
         for y in range(HAUTEUR):
-            if carteDistance[x][y] < 1000:
-                SetInfo1(x, y, carteDistance[x][y])
-            else : SetInfo1(x, y, "")
-            """ 
-         if GUM[x][y] == 1:
-            difX = x - PacManPos[0]
-            difX = difX if difX > 0 else -difX
-            difY = y - PacManPos[1]
-            difY = difY if difY > 0 else -difY
-            if difX + difY > 0: info =  x - PacManPos[0] + y - PacManPos[1]
-            else : info = -(difX + difY)
-            SetInfo1(x,y,info)
-         """
+            info = x
+            if x % 3 == 1:
+                info = "+∞"
+            elif x % 3 == 2:
+                info = ""
+            SetInfo1(x, y, info)
 
 
 def IAGhosts():
@@ -497,8 +393,6 @@ def checkCollision():
 iteration = 0
 
 
-
-
 def PlayOneTurn():
     global iteration, PAUSE_FLAG
 
@@ -520,4 +414,3 @@ def PlayOneTurn():
 # demarrage de la fenetre - ne pas toucher
 
 Window.mainloop()
-
